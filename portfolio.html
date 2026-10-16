@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Portfolio · Mehmet Bener PCB Design</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+.intro{position:relative;padding-block:clamp(72px,10vw,130px) 64px;border-bottom:1px solid var(--line);overflow:hidden}
+.intro h1{font-size:clamp(56px,11vw,150px);letter-spacing:-.05em;margin-top:20px}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.w>span{display:inline-block;animation:up 1.1s var(--ease) both;animation-delay:calc(var(--i)*110ms + 100ms)}
+@keyframes up{from{transform:translateY(105%)}to{transform:none}}
+.intro p{color:var(--mute);font-size:clamp(17px,1.6vw,20px);max-width:52ch;margin-top:26px;animation:fade 1s var(--ease) .6s both}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.net{position:absolute;right:max(20px,4vw);top:50%;width:min(44vw,520px);transform:translateY(-50%);pointer-events:none;opacity:.9}
+.net path{fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:900;animation:draw 2.6s var(--ease) both;animation-delay:calc(var(--i)*.18s + .3s)}
+.net path.dim{stroke-opacity:.35}
+.net circle{fill:var(--gold);animation:pop .5s var(--ease) both;animation-delay:calc(var(--i)*.18s + 1.6s)}
+@keyframes draw{from{stroke-dashoffset:900}to{stroke-dashoffset:0}}
+@keyframes pop{from{transform:scale(0)}to{transform:none}}
+.net circle{transform-box:fill-box;transform-origin:center}
+@media (max-width:860px){.net{opacity:.25;width:80vw;right:-10vw}}
+
+.grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;padding-block:64px 0}
+.grid .pcard{grid-column:span 2;text-decoration:none}
+.grid .pcard.big{grid-column:span 3}
+.grid .pcard.big .art{aspect-ratio:16/9}
+@media (max-width:960px){.grid{grid-template-columns:1fr 1fr}.grid .pcard,.grid .pcard.big{grid-column:span 1}}
+@media (max-width:600px){.grid{grid-template-columns:1fr}}
+.pcard:target{border-color:var(--gold)}
+
+.caps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:110px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.caps div{padding:30px 24px 32px 0;min-width:0}
+.caps div+div{padding-left:24px;border-left:1px solid var(--line)}
+.caps small{font:500 12px/1 var(--f-mono);color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+.caps h3{font-size:22px;margin:12px 0 8px}
+.caps p{color:var(--mute);font-size:15px}
+@media (max-width:900px){.caps{grid-template-columns:1fr 1fr}.caps div:nth-child(3){padding-left:0;border-left:0}.caps div:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:560px){.caps{grid-template-columns:1fr}.caps div,.caps div+div{padding-left:0;border-left:0}.caps div+div{border-top:1px solid var(--line)}}
+
+.band{margin-block:110px 80px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;padding:48px clamp(24px,4vw,56px);border:1px solid var(--line);border-radius:24px;background:linear-gradient(120deg,var(--bg2),#17130a)}
+.band h2{font-size:clamp(32px,4.4vw,56px);max-width:16ch}
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"></div>
+<nav class="top">
+  <div class="wrap">
+    <a class="logo" href="./" aria-label="Home">
+      <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="none" stroke="#E3AE52" stroke-width="1.5"/><path d="M7 19V11h5l4 4h5" fill="none" stroke="#E3AE52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21" cy="15" r="2.2" fill="#E3AE52"/><circle cx="7" cy="19" r="2.2" fill="#E3AE52"/></svg>
+      <span>Mehmet Bener<br><small>PCB Design</small></span>
+    </a>
+    <div class="links">
+      <a href="./#services">Services</a><a href="./#stackup">Engineering</a><a href="./#process">Process</a><a href="portfolio.html" aria-current="page">Portfolio</a>
+    </div>
+    <a class="btn gold sm mag" href="./#contact">Start a project <span class="arr">→</span></a>
+  </div>
+</nav>
+
+<header class="intro">
+  <svg class="net" viewBox="0 0 520 300" aria-hidden="true">
+    <path style="--i:0" d="M10 60 H180 L230 110 H400 L440 70 H510"/>
+    <path style="--i:1" class="dim" d="M10 120 H140 L190 170 H330 L370 130 H510"/>
+    <path style="--i:2" d="M10 200 H90 L140 250 H290 L340 200 H510"/>
+    <path style="--i:3" class="dim" d="M60 280 V230 L100 190 H220 L260 150 V20"/>
+    <circle style="--i:0" cx="510" cy="70" r="6"/><circle style="--i:1" cx="510" cy="130" r="6"/><circle style="--i:2" cx="510" cy="200" r="6"/><circle style="--i:3" cx="260" cy="20" r="6"/>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow">Portfolio</span>
+    <h1><span class="w"><span style="--i:0">Selected</span></span> <span class="w"><span style="--i:1"><em class="s">work.</em></span></span></h1>
+    <p>Boards for motor control, wireless handhelds, sensing and wearable events. Each one designed in KiCad, from schematic to manufacturing files.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+
+  <div class="caps">
+    <div class="rv"><small>Power</small><h3>Motor control</h3><p>H-bridge drivers, separated motor and logic supplies, current-rated traces.</p></div>
+    <div class="rv" style="--d:.06s"><small>Wireless</small><h3>Battery devices</h3><p>ESP32 designs running from LiPo cells, with displays and user input.</p></div>
+    <div class="rv" style="--d:.12s"><small>Sensing</small><h3>I²C peripherals</h3><p>Biosignal sensors, OLED displays and robot-ready sensor ports.</p></div>
+    <div class="rv" style="--d:.18s"><small>Production</small><h3>Made to order</h3><p>Fab-ready outputs for professional manufacturing at PCBWay.</p></div>
+  </div>
+
+  <div class="band rv">
+    <h2>Your board could be <em class="s">next.</em></h2>
+    <a class="btn gold mag" href="./#contact">Start a project <span class="arr">→</span></a>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap"><span>© 2026 Mehmet Bener · PCB Design</span><span>Board drawings are illustrations · photos and renders on request</span></div></footer>
+
+<script src="site.js"></script>
+<script>
+const grid=document.getElementById("grid");
+PCB.PROJECTS.forEach((p,i)=>{
+  grid.insertAdjacentHTML("beforeend",`<article class="pcard glow rv${i<2?" big":""}" id="${p.id}" data-tilt data-board-card style="--d:${(i%3)*.07}s">
+    <div class="art">${p.tag?`<span class="tagline">${p.tag}</span>`:""}${PCB.drawBoard(p.id)}</div>
+    <div class="info"><h3>${p.name}</h3><p>${p.blurb}</p><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join("")}</div></div>
+  </article>`);
+});
+grid.querySelectorAll(".art").forEach(PCB.wireBoard);
+PCB.init();
+</script>
+</body>
+</html>
