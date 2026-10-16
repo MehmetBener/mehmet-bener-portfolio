@@ -104,16 +104,27 @@ footer.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:
   .rv{transform:none}
 }
 
-/* photo slots: two per board, placeholder until the file exists */
-.shots{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
-.shot{position:relative;aspect-ratio:4/3;max-width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--bg3);padding:0;cursor:zoom-in;color:inherit;font:inherit}
-.shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
-.shot:hover img{transform:scale(1.06)}
-.shot .ph{display:none}
-.shot.missing{cursor:default;border-style:dashed;border-color:var(--line2)}
-.shot.missing img{display:none}
-.shot.missing .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;font:500 10.5px/1.3 var(--f-mono);color:var(--mute);word-break:break-all}
-.shot.missing .ph svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.5}
+/* photo gallery: the board photos are the card's hero */
+.gallery{position:relative;aspect-ratio:4/3;max-width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,#14211c,#0b100e 70%);border-bottom:1px solid var(--line);cursor:zoom-in}
+a .gallery{cursor:pointer}
+.gallery img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .7s var(--ease),transform 1.4s var(--ease)}
+.gallery .g2{opacity:0}
+.gallery[data-show="2"] .g2{opacity:1}
+.gallery[data-show="2"] .g1{opacity:0}
+.pcard:hover .gallery img{transform:scale(1.045)}
+.gallery.miss1 .g1,.gallery.miss2 .g2{display:none}
+.gallery::after{content:"";position:absolute;inset:auto 0 0;height:38%;background:linear-gradient(transparent,rgba(5,7,10,.55));pointer-events:none}
+.gph{display:none}
+.gallery.miss1.miss2{cursor:default;background-image:radial-gradient(rgba(236,239,243,.07) 1px,transparent 1.2px),radial-gradient(120% 90% at 50% 0%,#14211c,#0b100e 70%);background-size:14px 14px,auto}
+.gallery.miss1.miss2 .gph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;text-align:center;font:500 11px/1.5 var(--f-mono);color:var(--mute);word-break:break-all}
+.gph b{font:600 15px/1 var(--f-sans);color:var(--ink)}
+.gph svg{width:30px;height:30px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.gallery.miss1.miss2 .gtabs,.gallery.miss1 .gtabs,.gallery.miss2 .gtabs{display:none}
+.gtabs{position:absolute;right:12px;bottom:12px;z-index:2;display:flex;gap:6px}
+.gtabs button{width:26px;height:6px;border-radius:999px;border:0;padding:0;background:rgba(236,239,243,.35);cursor:pointer;transition:background .3s,width .3s}
+.gallery[data-show="1"] .gtabs [data-n="1"],.gallery[data-show="2"] .gtabs [data-n="2"]{background:var(--gold);width:38px}
+.gallery .tagline{z-index:2}
+.pcard .tagline{position:absolute;top:12px;left:12px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:#140E04;background:var(--gold);padding:6px 9px;border-radius:999px}
 .lightbox{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));background:rgba(5,7,10,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:zoom-out;animation:lbin .35s var(--ease)}
 .lightbox img{max-width:min(1100px,100%);max-height:84vh;border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
 .lightbox p{margin-top:14px;font:500 13px/1 var(--f-mono);color:var(--mute);text-align:center}
@@ -137,9 +148,9 @@ footer.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:
 @media (max-width:860px){.net{opacity:.25;width:80vw;right:-10vw}}
 
 .grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;padding-block:64px 0}
-.grid .pcard{grid-column:span 2;text-decoration:none}
+.grid .pcard{grid-column:span 3;text-decoration:none}
 .grid .pcard.big{grid-column:span 3}
-.grid .pcard.big .art{aspect-ratio:16/9}
+.grid .pcard.big .gallery{aspect-ratio:16/10}
 @media (max-width:960px){.grid{grid-template-columns:1fr 1fr}.grid .pcard,.grid .pcard.big{grid-column:span 1}}
 @media (max-width:600px){.grid{grid-template-columns:1fr}}
 .pcard:target{border-color:var(--gold)}
@@ -183,7 +194,7 @@ footer.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:
   <div class="wrap">
     <span class="eyebrow">Portfolio</span>
     <h1><span class="w"><span style="--i:0">Selected</span></span> <span class="w"><span style="--i:1"><em class="s">work.</em></span></span></h1>
-    <p>Boards for motor control, wireless handhelds, sensing and wearable events. Each one designed in KiCad, from schematic to manufacturing files.</p>
+    <p>Boards for motor control, sensing, classroom robotics and wearable events. Each one designed in KiCad, from schematic to manufacturing files.</p>
   </div>
 </header>
 
@@ -192,8 +203,8 @@ footer.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:
 
   <div class="caps">
     <div class="rv"><small>Power</small><h3>Motor control</h3><p>H-bridge drivers, separated motor and logic supplies, current-rated traces.</p></div>
-    <div class="rv" style="--d:.06s"><small>Wireless</small><h3>Battery devices</h3><p>ESP32 designs running from LiPo cells, with displays and user input.</p></div>
-    <div class="rv" style="--d:.12s"><small>Sensing</small><h3>I²C peripherals</h3><p>Biosignal sensors, OLED displays and robot-ready sensor ports.</p></div>
+    <div class="rv" style="--d:.06s"><small>Education</small><h3>Classroom hardware</h3><p>Plug-and-play robotics boards built for students and fab labs.</p></div>
+    <div class="rv" style="--d:.12s"><small>Sensing</small><h3>I²C peripherals</h3><p>Biosignal sensors and OLED displays on a shared I²C bus.</p></div>
     <div class="rv" style="--d:.18s"><small>Production</small><h3>Made to order</h3><p>Fab-ready outputs for professional manufacturing at PCBWay.</p></div>
   </div>
 
@@ -219,9 +230,6 @@ const PROJECTS = [
   {id:"badge", name:"Summit PCB Badge", tag:"In production · PCBWay",
    blurb:"Wearable circuit-board badge for a coding summit, with copper and silkscreen artwork on a custom outline.",
    chips:["Custom outline","PCB art","Events"]},
-  {id:"esp", name:"ESP32 Handheld", tag:"Fabricated",
-   blurb:"Battery-powered ESP32 handheld with an OLED display and four-button input. Designed, built and running.",
-   chips:["ESP32","LiPo power","OLED"]},
   {id:"pulse", name:"Pulse Oximeter Board", tag:"",
    blurb:"Arduino Nano board that reads heart rate and SpO₂ from a MAX30102 sensor and shows them on an OLED.",
    chips:["ATmega328","MAX30102","I²C"]},
@@ -298,17 +306,36 @@ PROJECTS.forEach(p=>{p.photos=[
   {src:`media/${p.id}/2.jpg`,cap:"Photo 2"}
 ]});
 
-function photoSlots(p){
-  return `<div class="shots">${p.photos.map(ph=>`<button type="button" class="shot" data-src="${ph.src}" data-cap="${p.name} · ${ph.cap}">
-    <img src="${ph.src}" alt="${p.name}, ${ph.cap.toLowerCase()}" loading="lazy" onerror="this.parentNode.classList.add('missing')">
-    <span class="ph"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>${ph.src}</span></button>`).join("")}</div>`;
+function photoArt(p){
+  const [a,b]=p.photos;
+  return `<div class="gallery" data-show="1">
+    <img class="g1" src="${a.src}" alt="${p.name}, photo 1" loading="lazy" onerror="PCB.miss(this,1)">
+    <img class="g2" src="${b.src}" alt="${p.name}, photo 2" loading="lazy" onerror="PCB.miss(this,2)">
+    <div class="gph"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg><b>Add photos</b><span>${a.src}<br>${b.src}</span></div>
+    ${p.tag?`<span class="tagline">${p.tag}</span>`:""}
+    <div class="gtabs" role="group" aria-label="Choose photo"><button type="button" data-n="1" aria-label="Photo 1"></button><button type="button" data-n="2" aria-label="Photo 2"></button></div>
+  </div>`;
 }
+function miss(img,n){
+  const g=img.closest(".gallery");g.classList.add("miss"+n);
+  if(n===1&&!g.classList.contains("miss2"))g.dataset.show="2";
+  if(n===2)g.dataset.show="1";
+}
+/* hover swaps to photo 2, dots pick a photo, click opens it large */
+document.addEventListener("pointerover",e=>{const g=e.target.closest&&e.target.closest(".gallery");if(g&&!g.classList.contains("miss2")&&!g.classList.contains("miss1")&&e.pointerType==="mouse"&&!g.dataset.pinned)g.dataset.show="2"});
+document.addEventListener("pointerout",e=>{const g=e.target.closest&&e.target.closest(".gallery");if(g&&!g.contains(e.relatedTarget)&&!g.classList.contains("miss1")&&!g.dataset.pinned)g.dataset.show="1"});
+document.addEventListener("click",e=>{
+  const t=e.target.closest(".gtabs button");
+  if(t){e.preventDefault();e.stopPropagation();const g=t.closest(".gallery");if(!g.classList.contains("miss"+t.dataset.n)){g.dataset.show=t.dataset.n;g.dataset.pinned="1"}return}
+},true);
 
 function lightbox(){
   document.addEventListener("click",e=>{
-    const b=e.target.closest(".shot");if(!b||b.classList.contains("missing"))return;
+    const g=e.target.closest(".gallery");if(!g||(g.classList.contains("miss1")&&g.classList.contains("miss2")))return;
+    if(g.closest("a"))return;
+    const img=g.querySelector(".g"+g.dataset.show);
     const box=document.createElement("div");box.className="lightbox";box.setAttribute("role","dialog");box.setAttribute("aria-label","Photo");
-    box.innerHTML=`<div><img src="${b.dataset.src}" alt=""><p>${b.dataset.cap}</p></div>`;
+    box.innerHTML=`<div><img src="${img.getAttribute("src")}" alt=""><p>${img.alt}</p></div>`;
     const close=()=>{box.remove();removeEventListener("keydown",esc)};const esc=ev=>{if(ev.key==="Escape")close()};
     box.addEventListener("click",close);addEventListener("keydown",esc);document.body.appendChild(box);
   });
@@ -381,18 +408,17 @@ function init(){
   });
 }
 
-window.PCB={PROJECTS,drawBoard,wireBoard,photoSlots,lightbox,init,RM};
+window.PCB={PROJECTS,drawBoard,wireBoard,photoArt,miss,lightbox,init,RM};
 })();
 
 
 const grid=document.getElementById("grid");
 PCB.PROJECTS.forEach((p,i)=>{
-  grid.insertAdjacentHTML("beforeend",`<article class="pcard glow rv${i<2?" big":""}" id="${p.id}" data-tilt data-board-card style="--d:${(i%3)*.07}s">
-    <div class="art">${p.tag?`<span class="tagline">${p.tag}</span>`:""}${PCB.drawBoard(p.id)}</div>
-    <div class="info"><h3>${p.name}</h3><p>${p.blurb}</p><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join("")}</div>${PCB.photoSlots(p)}</div>
+  grid.insertAdjacentHTML("beforeend",`<article class="pcard glow rv" id="${p.id}" data-tilt style="--d:${(i%3)*.07}s">
+    ${PCB.photoArt(p)}
+    <div class="info"><h3>${p.name}</h3><p>${p.blurb}</p><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join("")}</div></div>
   </article>`);
 });
-grid.querySelectorAll(".art").forEach(PCB.wireBoard);
 PCB.lightbox();
 PCB.init();
 </script>
