@@ -109,11 +109,13 @@ footer.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:
 /* photo gallery: the board photos are the card's hero */
 .gallery{position:relative;aspect-ratio:4/3;max-width:100%;overflow:hidden;background:radial-gradient(120% 90% at 50% 0%,#14211c,#0b100e 70%);border-bottom:1px solid var(--line);cursor:zoom-in}
 a .gallery{cursor:pointer}
-.gallery img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .7s var(--ease),transform 1.4s var(--ease)}
+.gallery img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .7s var(--ease)}
+.gb{position:absolute;inset:-30px;background-size:cover;background-position:center;filter:blur(26px) brightness(.4) saturate(1.2);transition:opacity .7s var(--ease)}
+.gb2{opacity:0}.gallery[data-show="2"] .gb2{opacity:1}.gallery[data-show="2"] .gb1{opacity:0}
+.gallery.miss1 .gb1,.gallery.miss2 .gb2{display:none}
 .gallery .g2{opacity:0}
 .gallery[data-show="2"] .g2{opacity:1}
 .gallery[data-show="2"] .g1{opacity:0}
-.pcard:hover .gallery img{transform:scale(1.045)}
 .gallery.miss1 .g1,.gallery.miss2 .g2{display:none}
 .gallery::after{content:"";position:absolute;inset:auto 0 0;height:38%;background:linear-gradient(transparent,rgba(5,7,10,.55));pointer-events:none}
 .gph{display:none}
@@ -148,18 +150,10 @@ a .gallery{cursor:pointer}
 .hero .sub{font-size:clamp(17px,1.6vw,20px);color:var(--mute);max-width:46ch;margin-top:28px}
 .hero .sub b{color:var(--ink);font-weight:500}
 .hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}
-.meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:56px;font:500 12px/1 var(--f-mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
+.x-meta{display:flex;gap:28px;flex-wrap:wrap;margin-top:56px;font:500 12px/1 var(--f-mono);color:var(--mute);letter-spacing:.06em;text-transform:uppercase}
 .meta span{display:flex;align-items:center;gap:8px}
 .meta span::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);animation:blink 2.4s infinite;animation-delay:var(--b,0s)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-
-/* ---------- marquee ---------- */
-.marquee{border-bottom:1px solid var(--line);overflow:hidden;padding-block:20px;background:var(--bg2)}
-.track{display:flex;width:max-content;animation:slide 38s linear infinite}
-.marquee:hover .track{animation-play-state:paused}
-.track span{display:flex;align-items:center;gap:28px;padding-right:28px;font:500 15px/1 var(--f-mono);color:var(--mute);white-space:nowrap;letter-spacing:.02em}
-.track span i{width:9px;height:9px;border:1.5px solid var(--gold);border-radius:50%;display:inline-block}
-@keyframes slide{to{transform:translateX(-50%)}}
 
 /* ---------- sections ---------- */
 section.s{padding-block:120px 0}
@@ -195,36 +189,7 @@ section.s{padding-block:120px 0}
 @media (max-width:900px){.stackup{grid-template-columns:1fr}.stage{height:380px;order:-1}.layers{transform:rotateX(58deg) rotateZ(-34deg) scale(.82)}}
 @media (max-width:420px){.layers{transform:rotateX(58deg) rotateZ(-34deg) scale(.66)}.stage{height:320px}}
 
-/* ---------- process ---------- */
-.steps{position:relative;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
-.steps::before{content:"";position:absolute;left:0;right:0;top:9px;height:2px;background:var(--line2)}
-.steps::after{content:"";position:absolute;top:9px;left:0;width:18%;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);animation:run 5s linear infinite}
-@keyframes run{from{left:-18%}to{left:100%}}
-.steps li{position:relative;padding-top:42px;min-width:0}
-.node{position:absolute;top:0;left:0;width:20px;height:20px;border-radius:50%;background:var(--bg);border:2px solid var(--gold);display:grid;place-items:center}
-.node::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--gold);animation:lit 5s infinite;animation-delay:calc(var(--i)*1s)}
-@keyframes lit{0%,100%{opacity:.25;box-shadow:none}6%{opacity:1;box-shadow:0 0 14px 3px var(--gold)}20%{opacity:.25;box-shadow:none}}
-.steps small{font:500 12px/1 var(--f-mono);color:var(--gold);letter-spacing:.08em}
-.steps h3{font-size:22px;margin:10px 0 8px}
-.steps p{color:var(--mute);font-size:15px}
-@media (max-width:900px){.steps{grid-template-columns:1fr;gap:34px;padding-left:40px}.steps::before{top:0;bottom:0;left:9px;right:auto;width:2px;height:auto}.steps::after{left:9px;width:2px;height:18%;background:linear-gradient(transparent,var(--gold2),transparent);animation-name:runv}.steps li{padding-top:0}.node{left:-40px}}
-@keyframes runv{from{top:-18%}to{top:100%}}
-
-/* ---------- deliverables terminal ---------- */
-.deliver{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:48px;align-items:center}
-.term{background:#07090C;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
-.term header{display:flex;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);font:500 12px/1 var(--f-mono);color:var(--mute)}
-.term header b{color:var(--gold);font-weight:500}
-.files{list-style:none;margin:0;padding:10px 0;font:400 13.5px/1 var(--f-mono);overflow-x:auto}
-.files li{display:grid;grid-template-columns:minmax(220px,1.3fr) minmax(120px,1fr) 34px;gap:14px;padding:9px 18px;align-items:center;white-space:nowrap;transition:background .3s}
-.files li span:nth-child(2){color:var(--mute)}
-.files li b{font-weight:500;color:var(--gold);text-align:right}
-.files li.flash{background:rgba(227,174,82,.09)}
-.files li.drc{border-top:1px dashed var(--line2);margin-top:6px;padding-top:14px;color:var(--gold2)}
-.deliver .lead{color:var(--mute);font-size:17px;max-width:42ch;margin-top:20px}
-@media (max-width:900px){.deliver{grid-template-columns:1fr}}
-
-/* ---------- work teaser ---------- */
+/* ---------- work ---------- */
 .work{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 @media (max-width:600px){.work{grid-template-columns:1fr}}
 .more{display:flex;justify-content:center;margin-top:40px}
@@ -251,120 +216,49 @@ section.s{padding-block:120px 0}
       <span>Mehmet Bener<br><small>PCB Design</small></span>
     </a>
     <div class="links">
-      <a href="#services">Services</a><a href="#stackup">Engineering</a><a href="#process">Process</a><a href="portfolio.html">Portfolio</a>
+      <a href="#work">Work</a><a href="#stackup">Layers</a><a href="#contact">Contact</a>
     </div>
-    <a class="btn gold sm mag" href="#contact">Start a project <span class="arr">→</span></a>
+    <a class="btn gold sm mag" href="#contact">Contact <span class="arr">→</span></a>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <canvas id="route" aria-hidden="true"></canvas>
   <div class="wrap">
-    <span class="eyebrow fade" style="--fd:.1s">Freelance PCB design · KiCad</span>
+    <span class="eyebrow fade" style="--fd:.1s">PCB design · KiCad</span>
     <h1>
       <span class="w"><span style="--i:0">Circuit</span></span>
       <span class="w"><span style="--i:1">boards,</span></span>
       <span class="w"><span style="--i:2"><em class="s">designed</em></span></span>
       <span class="w"><span style="--i:3"><em class="s">to ship.</em></span></span>
     </h1>
-    <p class="sub fade" style="--fd:.75s">I turn your idea, sketch or breadboard prototype into a <b>clean, manufacturable PCB</b>, with every file your fab and assembler need to build it.</p>
+    <p class="sub fade" style="--fd:.75s">Compact 1- and 2-layer boards, from schematic to <b>fab-ready files</b>.</p>
     <div class="cta fade" style="--fd:.9s">
-      <a class="btn gold mag" href="#contact">Get a quote <span class="arr">→</span></a>
-      <a class="btn mag" href="portfolio.html">View portfolio</a>
-    </div>
-    <div class="meta fade" style="--fd:1.05s">
-      <span>Remote, worldwide</span><span style="--b:.8s">Schematic to Gerbers</span><span style="--b:1.6s">Fixed-price quotes</span>
+      <a class="btn gold mag" href="#work">See the work <span class="arr">→</span></a>
+      <a class="btn mag" href="#contact">Contact</a>
     </div>
   </div>
 </header>
 
-<div class="marquee" aria-label="Technologies">
-  <div class="track">
-    <span>KiCad <i></i> ESP32 <i></i> Raspberry Pi Pico / RP2040 <i></i> Arduino / ATmega328 <i></i> H-bridge motor drivers <i></i> LiPo power <i></i> I²C · SPI · UART <i></i> OLED displays <i></i> Sensors <i></i> Gerber · Excellon · BOM · CPL <i></i></span>
-    <span aria-hidden="true">KiCad <i></i> ESP32 <i></i> Raspberry Pi Pico / RP2040 <i></i> Arduino / ATmega328 <i></i> H-bridge motor drivers <i></i> LiPo power <i></i> I²C · SPI · UART <i></i> OLED displays <i></i> Sensors <i></i> Gerber · Excellon · BOM · CPL <i></i></span>
-  </div>
-</div>
-
 <main>
-<section class="s" id="services">
+<section class="s" id="work">
   <div class="wrap">
     <div class="head">
-      <div><span class="eyebrow rv">Services</span><h2 class="rv" style="--d:.05s">From napkin sketch to <em class="s">fab-ready files.</em></h2></div>
-      <p class="rv" style="--d:.1s">Focused on 1- and 2-layer boards for makers, educators and small hardware teams, where a careful layout keeps cost low and the first batch working.</p>
+      <div><span class="eyebrow rv">Work</span><h2 class="rv" style="--d:.05s">Boards on the <em class="s">bench.</em></h2></div>
     </div>
-    <div class="svc">
-      <div class="glow rv"><svg viewBox="0 0 40 40"><path d="M2 20h8l3-7 5 14 5-14 5 14 3-7h7"/></svg><h3>Schematic capture</h3><p>Your block diagram or prototype, turned into a clear, annotated schematic with parts you can actually buy.</p></div>
-      <div class="glow rv" style="--d:.06s"><svg viewBox="0 0 40 40"><path d="M4 30h12l8-8h12M4 18h8l6-6h18"/><circle cx="4" cy="30" r="2.5"/><circle cx="4" cy="18" r="2.5"/></svg><h3>Layout and routing</h3><p>Compact placement, solid ground pours and short, clean signal paths that pass DRC the first time.</p></div>
-      <div class="glow rv" style="--d:.12s"><svg viewBox="0 0 40 40"><rect x="8" y="6" width="24" height="28" rx="3"/><path d="M4 12h4M4 18h4M4 24h4M4 30h4M32 12h4M32 18h4M32 24h4M32 30h4"/></svg><h3>Shields and carrier boards</h3><p>Add-on boards for Raspberry Pi Pico, Arduino and ESP32, with the connectors and sensors your project needs.</p></div>
-      <div class="glow rv"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="13"/><path d="M22 10l-6 11h7l-5 10"/></svg><h3>Motor and power boards</h3><p>DC, stepper and servo drivers with separated motor supplies and traces sized for the current.</p></div>
-      <div class="glow rv" style="--d:.06s"><svg viewBox="0 0 40 40"><path d="M20 3l15 6v14l-15 14L5 23V9z"/><circle cx="20" cy="9" r="2"/><path d="M13 20h14M16 26h8"/></svg><h3>Badges and PCB art</h3><p>Custom outlines and copper artwork for conferences, schools and clubs, made to be produced in batches.</p></div>
-      <div class="glow rv" style="--d:.12s"><svg viewBox="0 0 40 40"><circle cx="17" cy="17" r="10"/><path d="M25 25l10 10M12 17l4 4 7-8"/></svg><h3>Design review</h3><p>Already have a KiCad project? I check footprints, rules and manufacturability before you spend on an order.</p></div>
-    </div>
+    <div class="work" id="grid"></div>
   </div>
 </section>
 
 <section class="s" id="stackup">
   <div class="wrap stackup">
     <div>
-      <span class="eyebrow rv">Engineering</span>
+      <span class="eyebrow rv">Layers</span>
       <h2 class="rv" style="font-size:clamp(36px,5vw,62px);margin-top:16px;--d:.05s">Every layer, <em class="s">considered.</em></h2>
-      <p class="lead rv" style="--d:.1s">A two-layer board is seven layers of material. Scroll to pull the stack apart, or point at a layer to see what it does.</p>
+      <p class="lead rv" style="--d:.1s">Scroll to pull a two-layer board apart. Point at a layer to isolate it.</p>
       <ul class="legend" id="legend"></ul>
     </div>
     <div class="stage" aria-hidden="true"><div class="layers" id="layers"></div></div>
-  </div>
-</section>
-
-<section class="s" id="process">
-  <div class="wrap">
-    <div class="head">
-      <div><span class="eyebrow rv">Process</span><h2 class="rv" style="--d:.05s">Clear steps, <em class="s">no surprises.</em></h2></div>
-      <p class="rv" style="--d:.1s">You approve the schematic and the layout before anything is final. A typical small board takes one to two weeks.</p>
-    </div>
-    <ol class="steps">
-            <li class="rv" style="--i:0"><span class="node"></span><small>01</small><h3>Brief</h3><p>What the board does, size, connectors, budget and quantity.</p></li>
-      <li class="rv" style="--i:1;--d:.05s"><span class="node"></span><small>02</small><h3>Schematic</h3><p>Parts chosen for stock and price. You review and sign off.</p></li>
-      <li class="rv" style="--i:2;--d:.1s"><span class="node"></span><small>03</small><h3>Layout</h3><p>Placement, then routing. A 3D render goes to you for approval.</p></li>
-      <li class="rv" style="--i:3;--d:.15s"><span class="node"></span><small>04</small><h3>Verification</h3><p>DRC against your fab's rules, footprint and BOM cross-checks.</p></li>
-      <li class="rv" style="--i:4;--d:.2s"><span class="node"></span><small>05</small><h3>Hand-off</h3><p>Fab files, the KiCad project, and help placing your order.</p></li>
-    </ol>
-  </div>
-</section>
-
-<section class="s">
-  <div class="wrap deliver">
-    <div>
-      <span class="eyebrow rv">Deliverables</span>
-      <h2 class="rv" style="font-size:clamp(36px,5vw,62px);margin-top:16px;--d:.05s">Upload, order, <em class="s">done.</em></h2>
-      <p class="lead rv" style="--d:.1s">Every project ends with a complete manufacturing package that uploads straight to PCBWay, JLCPCB or any other fab and assembly service.</p>
-    </div>
-    <div class="term rv" style="--d:.1s">
-      <header><span><b>~/</b>your_board/fab_output</span><span>KiCad</span></header>
-      <ul class="files" id="files">
-        <li><span>your_board-F_Cu.gbr</span><span>Top copper</span><b>OK</b></li>
-        <li><span>your_board-B_Cu.gbr</span><span>Bottom copper</span><b>OK</b></li>
-        <li><span>your_board-F_Mask.gbr</span><span>Solder mask</span><b>OK</b></li>
-        <li><span>your_board-F_Silkscreen.gbr</span><span>Silkscreen</span><b>OK</b></li>
-        <li><span>your_board-Edge_Cuts.gbr</span><span>Board outline</span><b>OK</b></li>
-        <li><span>your_board.drl</span><span>Drill file</span><b>OK</b></li>
-        <li><span>your_board-bom.csv</span><span>Bill of materials</span><b>OK</b></li>
-        <li><span>your_board-cpl.csv</span><span>Pick and place</span><b>OK</b></li>
-        <li><span>your_board-schematic.pdf</span><span>Schematic</span><b>OK</b></li>
-        <li><span>your_board.step</span><span>3D model</span><b>OK</b></li>
-        <li class="drc"><span>DRC · 0 errors · 0 warnings</span><span>Ready to order</span><b>✓</b></li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="s" id="work">
-  <div class="wrap">
-    <div class="head">
-      <div><span class="eyebrow rv">Selected work</span><h2 class="rv" style="--d:.05s">Boards on the <em class="s">bench.</em></h2></div>
-      <p class="rv" style="--d:.1s">Motor control and wearable badges, from first sketch to manufactured board.</p>
-    </div>
-    <div class="work" id="teaser"></div>
-    <div class="more"><a class="btn mag" href="portfolio.html">View the full portfolio <span class="arr">→</span></a></div>
   </div>
 </section>
 
@@ -373,13 +267,12 @@ section.s{padding-block:120px 0}
     <div class="rings" aria-hidden="true"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i></div>
     <span class="eyebrow">Contact</span>
     <h2>Have a board in <em class="s">mind?</em></h2>
-    <p>Send a short description, a sketch or a photo of your prototype. You'll get questions, a timeline and a fixed quote.</p>
     <div class="mail"><code id="addr">mehmetbenerepik@gmail.com</code><button class="btn gold mag" type="button" id="copy">Copy email</button></div>
   </div>
 </section>
 </main>
 
-<footer class="foot"><div class="wrap"><span>© 2026 Mehmet Bener · PCB Design</span><span>Istanbul · Working worldwide</span></div></footer>
+<footer class="foot"><div class="wrap"><span>© 2026 Mehmet Bener · PCB Design</span><span>Istanbul, Türkiye</span></div></footer>
 
 <script>
 /* Shared interactions and board drawings for both pages */
@@ -467,13 +360,14 @@ const DRAW = {
 };
 
 PROJECTS.forEach(p=>{p.photos=[
-  {src:`media/${p.id}/1.png`,cap:"Photo 1"},
-  {src:`media/${p.id}/2.png`,cap:"Photo 2"}
+  {src:`media/${p.id}/1.jpg`,cap:"Photo 1"},
+  {src:`media/${p.id}/2.jpg`,cap:"Photo 2"}
 ]});
 
 function photoArt(p){
   const [a,b]=p.photos;
   return `<div class="gallery" data-show="1">
+    <div class="gb gb1" style="background-image:url('${a.src}')"></div><div class="gb gb2" style="background-image:url('${b.src}')"></div>
     <img class="g1" src="${a.src}" alt="${p.name}, photo 1" loading="lazy" onerror="PCB.miss(this,1)">
     <img class="g2" src="${b.src}" alt="${p.name}, photo 2" loading="lazy" onerror="PCB.miss(this,2)">
     <div class="gph"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg><b>Add photos</b><span>${a.src}<br>${b.src}</span></div>
@@ -670,31 +564,19 @@ PCB.init();
   if(PCB.RM)box.style.setProperty("--gap","30px");else{document.addEventListener("tick",upd);upd()}
 })();
 
-/* ---------- deliverables check sequence ---------- */
+/* ---------- work grid ---------- */
 (()=>{
-  const list=document.getElementById("files");if(PCB.RM||!("IntersectionObserver" in window))return;
-  const io=new IntersectionObserver(([e])=>{if(!e.isIntersecting)return;io.disconnect();
-    const rows=[...list.children];rows.forEach(r=>r.querySelector("b").textContent="··");
-    rows.forEach((r,i)=>setTimeout(()=>{r.classList.add("flash");r.querySelector("b").textContent=r.classList.contains("drc")?"✓":"OK";setTimeout(()=>r.classList.remove("flash"),500)},250+i*170));
-  },{threshold:.5});io.observe(list);
-})();
-
-/* ---------- work teaser ---------- */
-(()=>{
-  const host=document.getElementById("teaser");
-  PCB.PROJECTS.filter(p=>p.id==="motor"||p.id==="badge").forEach((p,i)=>{
-    host.insertAdjacentHTML("beforeend",`<a class="pcard glow rv" data-tilt href="portfolio.html#${p.id}" style="text-decoration:none;--d:${i*.07}s">
+  const grid=document.getElementById("grid");
+  PCB.PROJECTS.forEach((p,i)=>{
+    grid.insertAdjacentHTML("beforeend",`<article class="pcard glow rv" id="${p.id}" style="--d:${(i%2)*.07}s">
       ${PCB.photoArt(p)}
-      <div class="info"><h3>${p.name}</h3><p>${p.blurb}</p></div></a>`);
+      <div class="info"><h3>${p.name}</h3><p>${p.blurb}</p><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join("")}</div></div>
+    </article>`);
   });
-    // late-added cards need the shared effects too
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}));
-  host.querySelectorAll(".rv").forEach(el=>PCB.RM?el.classList.add("in"):io.observe(el));
-  host.querySelectorAll(".glow").forEach(el=>el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect();el.style.setProperty("--gx",(e.clientX-r.left)+"px");el.style.setProperty("--gy",(e.clientY-r.top)+"px")}));
-  if(matchMedia("(pointer: fine)").matches&&!PCB.RM)host.querySelectorAll("[data-tilt]").forEach(el=>{
-    el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;el.style.transform=`perspective(900px) rotateX(${-y*7}deg) rotateY(${x*9}deg) translateY(-4px)`});
-    el.addEventListener("pointerleave",()=>el.style.transform="");
-  });
+  grid.querySelectorAll(".rv").forEach(el=>PCB.RM?el.classList.add("in"):io.observe(el));
+  grid.querySelectorAll(".glow").forEach(el=>el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect();el.style.setProperty("--gx",(e.clientX-r.left)+"px");el.style.setProperty("--gy",(e.clientY-r.top)+"px")}));
+  PCB.lightbox();
 })();
 </script>
 </body>
