@@ -3,13 +3,123 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="claude:viewport-fit-sides" content="cover">
 <title>Portfolio · Mehmet Bener PCB Design</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="site.css">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0}
+img{max-width:100%}
+/* Layout: a dark board under a bench light. Matte soldermask black, ENIG gold for anything live, silkscreen white for type. One committed dark look. */
+:root{
+  color-scheme:dark;
+  --bg:#0A0D12; --bg2:#0F141B; --bg3:#141B24; --line:#1F2833; --line2:#2B3644;
+  --ink:#ECEFF3; --mute:#8D99A8; --gold:#E3AE52; --gold2:#F5D08A; --copper:#C9693B; --mask:#123B2F; --fr4:#B49A5E;
+  --f-sans:"Geist", "Helvetica Neue", Arial, sans-serif;
+  --f-serif:"Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --f-mono:"Geist Mono", ui-monospace, Menlo, monospace;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;line-height:1.02;text-wrap:balance}
+p{margin:0}
+em.s{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.01em;color:var(--gold)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+::selection{background:var(--gold);color:#120D04}
+
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:500 12px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--gold)}
+
+/* progress line + nav */
+.progress{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:2px;width:100%;transform-origin:0 50%;transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--copper),var(--gold2));z-index:60}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:49;background:var(--bg)}
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);background:color-mix(in srgb,var(--bg) 72%,transparent);border-bottom:1px solid transparent;transition:border-color .3s}
+nav.top.scrolled{border-bottom-color:var(--line)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:600;letter-spacing:-.01em}
+.logo svg{width:28px;height:28px}
+.logo small{font:500 11px/1 var(--f-mono);color:var(--mute);letter-spacing:.1em;text-transform:uppercase}
+.links{display:flex;gap:28px;font-size:14px;color:var(--mute)}
+.links a{text-decoration:none;position:relative;transition:color .2s}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
+.links a:hover,.links a[aria-current]{color:var(--ink)}
+.links a:hover::after,.links a[aria-current]::after{transform:scaleX(1);transform-origin:left}
+@media (max-width:760px){.links{display:none}}
+
+/* buttons */
+.btn{--mx:0px;--my:0px;display:inline-flex;align-items:center;gap:10px;font:500 15px/1 var(--f-sans);padding:15px 22px;border-radius:999px;text-decoration:none;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--ink);transform:translate(var(--mx),var(--my));transition:transform .25s var(--ease),background .25s,border-color .25s,color .25s;position:relative;overflow:hidden;isolation:isolate}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#140E04}
+.btn.gold::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);transform:translateX(-120%);z-index:-1}
+.btn.gold:hover::before{transition:transform .7s var(--ease);transform:translateX(120%)}
+.btn:not(.gold):hover{border-color:var(--gold);color:var(--gold2)}
+.btn .arr{transition:transform .3s var(--ease)}
+.btn:hover .arr{transform:translateX(4px)}
+.btn.sm{padding:10px 16px;font-size:14px}
+
+/* reveal: movement only, content is always visible */
+.rv{transform:translateY(22px);transition:transform .9s var(--ease) var(--d,0s)}
+.rv.in{transform:none}
+
+/* glow cards */
+.glow{--gx:50%;--gy:50%;position:relative;background:var(--bg2);border:1px solid var(--line);border-radius:18px;overflow:hidden;isolation:isolate}
+.glow::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--gx) var(--gy),rgba(227,174,82,.13),transparent 45%);opacity:0;transition:opacity .35s;z-index:-1}
+.glow::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(260px circle at var(--gx) var(--gy),var(--gold),transparent 60%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s;pointer-events:none}
+.glow:hover::before,.glow:hover::after{opacity:1}
+
+/* board drawings (shared by both pages) */
+.board{width:100%;height:auto;display:block}
+.board .edge{fill:rgba(255,255,255,.025);stroke:var(--ink);stroke-opacity:.55;stroke-width:1.5}
+.board .tr{fill:none;stroke:var(--gold);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--len,600);stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--ease)}
+.board .tr.thin{stroke-width:1.3;stroke-opacity:.7}
+.board .pad{fill:var(--gold)}
+.board .ring{fill:none;stroke:var(--gold);stroke-width:1.6}
+.board .ic{fill:#0B0F14;stroke:var(--ink);stroke-opacity:.5;stroke-width:1.2}
+.board .txt{fill:var(--ink);fill-opacity:.75;font:500 8.5px var(--f-mono);letter-spacing:.06em}
+.board .pulse{fill:var(--gold2);filter:drop-shadow(0 0 5px var(--gold))}
+.redraw .board .tr{stroke-dashoffset:var(--len,600);transition:none}
+
+/* project cards (shared) */
+.pcard{display:flex;flex-direction:column;transition:transform .45s var(--ease),border-color .3s;will-change:transform}
+.pcard:hover{border-color:var(--line2)}
+.pcard .art{position:relative;aspect-ratio:16/10;max-width:100%;background:radial-gradient(120% 90% at 50% 0%,#14211c,#0b100e 70%);border-bottom:1px solid var(--line);display:grid;place-items:center;padding:18px}
+.pcard .art::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(236,239,243,.07) 1px,transparent 1.2px);background-size:14px 14px;pointer-events:none}
+.pcard .art .board{position:relative;max-width:300px;transition:transform .6s var(--ease)}
+.pcard:hover .art .board{transform:scale(1.04)}
+.pcard .tagline{position:absolute;top:12px;left:12px;font:500 11px/1 var(--f-mono);letter-spacing:.06em;color:#140E04;background:var(--gold);padding:6px 9px;border-radius:999px}
+.pcard .info{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pcard h3{font-size:21px;letter-spacing:-.02em}
+.pcard p{color:var(--mute);font-size:14.5px;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.chips span{font:500 11px/1 var(--f-mono);color:var(--ink);border:1px solid var(--line2);padding:6px 8px;border-radius:6px;letter-spacing:.03em}
+
+footer.foot{border-top:1px solid var(--line);padding-block:28px;font:400 12px/1.6 var(--f-mono);color:var(--mute)}
+footer.foot .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{transform:none}
+}
+
+/* photo slots: two per board, placeholder until the file exists */
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.shot{position:relative;aspect-ratio:4/3;max-width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--bg3);padding:0;cursor:zoom-in;color:inherit;font:inherit}
+.shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+.shot:hover img{transform:scale(1.06)}
+.shot .ph{display:none}
+.shot.missing{cursor:default;border-style:dashed;border-color:var(--line2)}
+.shot.missing img{display:none}
+.shot.missing .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px;text-align:center;font:500 10.5px/1.3 var(--f-mono);color:var(--mute);word-break:break-all}
+.shot.missing .ph svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.5}
+.lightbox{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:max(20px,env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));background:rgba(5,7,10,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);cursor:zoom-out;animation:lbin .35s var(--ease)}
+.lightbox img{max-width:min(1100px,100%);max-height:84vh;border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lightbox p{margin-top:14px;font:500 13px/1 var(--f-mono);color:var(--mute);text-align:center}
+@keyframes lbin{from{opacity:0}to{opacity:1}}
+
+/* ===== page ===== */
 .intro{position:relative;padding-block:clamp(72px,10vw,130px) 64px;border-bottom:1px solid var(--line);overflow:hidden}
 .intro h1{font-size:clamp(56px,11vw,150px);letter-spacing:-.05em;margin-top:20px}
 .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
@@ -51,14 +161,14 @@ body{margin:0}
 <div class="progress" aria-hidden="true"></div>
 <nav class="top">
   <div class="wrap">
-    <a class="logo" href="./" aria-label="Home">
+    <a class="logo" href="index.html" aria-label="Home">
       <svg viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="7" fill="none" stroke="#E3AE52" stroke-width="1.5"/><path d="M7 19V11h5l4 4h5" fill="none" stroke="#E3AE52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21" cy="15" r="2.2" fill="#E3AE52"/><circle cx="7" cy="19" r="2.2" fill="#E3AE52"/></svg>
       <span>Mehmet Bener<br><small>PCB Design</small></span>
     </a>
     <div class="links">
-      <a href="./#services">Services</a><a href="./#stackup">Engineering</a><a href="./#process">Process</a><a href="portfolio.html" aria-current="page">Portfolio</a>
+      <a href="index.html#services">Services</a><a href="index.html#stackup">Engineering</a><a href="index.html#process">Process</a><a href="portfolio.html" aria-current="page">Portfolio</a>
     </div>
-    <a class="btn gold sm mag" href="./#contact">Start a project <span class="arr">→</span></a>
+    <a class="btn gold sm mag" href="index.html#contact">Start a project <span class="arr">→</span></a>
   </div>
 </nav>
 
@@ -89,22 +199,201 @@ body{margin:0}
 
   <div class="band rv">
     <h2>Your board could be <em class="s">next.</em></h2>
-    <a class="btn gold mag" href="./#contact">Start a project <span class="arr">→</span></a>
+    <a class="btn gold mag" href="index.html#contact">Start a project <span class="arr">→</span></a>
   </div>
 </main>
 
-<footer class="foot"><div class="wrap"><span>© 2026 Mehmet Bener · PCB Design</span><span>Board drawings are illustrations · photos and renders on request</span></div></footer>
+<footer class="foot"><div class="wrap"><span>© 2026 Mehmet Bener · PCB Design</span><span>Board drawings are illustrations</span></div></footer>
 
-<script src="site.js"></script>
 <script>
+/* Shared interactions and board drawings for both pages */
+(function(){
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const FINE = matchMedia("(pointer: fine)").matches;
+
+/* ---------- project data ---------- */
+const PROJECTS = [
+  {id:"motor", name:"Pico Motor Driver", tag:"In production · PCBWay",
+   blurb:"Drives two DC motors or a stepper plus two servos from a Raspberry Pi Pico, on a separate 5–12 V motor supply.",
+   chips:["RP2040","DRV8833","Motor control"]},
+  {id:"badge", name:"Summit PCB Badge", tag:"In production · PCBWay",
+   blurb:"Wearable circuit-board badge for a coding summit, with copper and silkscreen artwork on a custom outline.",
+   chips:["Custom outline","PCB art","Events"]},
+  {id:"esp", name:"ESP32 Handheld", tag:"Fabricated",
+   blurb:"Battery-powered ESP32 handheld with an OLED display and four-button input. Designed, built and running.",
+   chips:["ESP32","LiPo power","OLED"]},
+  {id:"pulse", name:"Pulse Oximeter Board", tag:"",
+   blurb:"Arduino Nano board that reads heart rate and SpO₂ from a MAX30102 sensor and shows them on an OLED.",
+   chips:["ATmega328","MAX30102","I²C"]},
+  {id:"shield", name:"Pico Robotics Shield", tag:"",
+   blurb:"Robot-ready ports for analog, digital, servo and I²C, so students wire sensors to a Pico without a breadboard.",
+   chips:["RP2040","Servo","Education"]}
+];
+
+/* ---------- board drawing helpers (viewBox 320 x 200) ---------- */
+const R=(x,y,w,h,c,rx=0)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" class="${c}"/>`;
+const C=(x,y,r,c)=>`<circle cx="${x}" cy="${y}" r="${r}" class="${c}"/>`;
+const T=(x,y,s,a="middle")=>`<text x="${x}" y="${y}" text-anchor="${a}" class="txt">${s}</text>`;
+const P=(d,c="tr")=>`<path d="${d}" class="${c}"/>`;
+const row=(x,y,n,dx,dy,s=4)=>{let o="";for(let i=0;i<n;i++)o+=R(x+i*dx-s/2,y+i*dy-s/2,s,s,"pad",1);return o};
+const holes=()=>C(22,22,5,"ring")+C(298,22,5,"ring")+C(22,178,5,"ring")+C(298,178,5,"ring");
+const edge=()=>R(8,8,304,184,"edge",12);
+
+const DRAW = {
+  motor(){
+    return edge()+holes()+
+      R(40,50,48,104,"ic",3)+row(44,56,10,0,10)+row(84,56,10,0,10)+T(64,106,"PICO")+
+      R(150,78,40,30,"ic",2)+row(146,82,4,0,7,3)+row(194,82,4,0,7,3)+T(170,96,"DRV")+
+      R(246,40,46,34,"ic",3)+C(259,57,7,"ring")+C(279,57,7,"ring")+
+      R(246,112,46,34,"ic",3)+C(259,129,7,"ring")+C(279,129,7,"ring")+
+      row(130,168,3,10,0,5)+row(180,168,3,10,0,5)+T(150,160,"SERVO",)+
+      P("M84 76 H120 L134 90 H146")+P("M84 96 H118 L126 104 H146","tr thin")+
+      P("M194 82 H218 L232 60 H252")+P("M194 103 H218 L232 125 H252")+
+      P("M84 126 H104 L118 140 V168 H130","tr thin")+P("M84 136 H96 L110 150 H170 L180 160 V168","tr thin");
+  },
+  badge(){
+    return `<path d="M160 10 L292 54 L292 140 L160 190 L28 140 L28 54 Z" class="edge"/>`+
+      C(160,32,7,"ring")+
+      `<text x="160" y="112" text-anchor="middle" class="txt" style="font-size:30px;fill-opacity:.9">&lt;/&gt;</text>`+
+      P("M60 70 H110 L124 84 V128 L136 140 H184 L196 128 V84 L210 70 H260")+
+      P("M70 140 H104 L118 154 H202 L216 140 H250","tr thin")+
+      C(60,70,4,"pad")+C(260,70,4,"pad")+C(70,140,4,"pad")+C(250,140,4,"pad")+
+      R(150,150,20,10,"ic",2)+T(160,176,"SUMMIT");
+  },
+  esp(){
+    return edge()+holes()+
+      R(36,36,70,96,"ic",3)+`<path d="M40 40 H102 V60 H40 Z" fill="none" class="tr thin" style="stroke-dasharray:3 3"/>`+
+      row(36,70,7,0,9,3.5)+row(106,70,7,0,9,3.5)+T(71,104,"ESP32")+
+      R(150,34,120,58,"ic",4)+T(210,67,"OLED")+
+      C(186,128,8,"ring")+C(170,144,8,"ring")+C(202,144,8,"ring")+C(186,160,8,"ring")+
+      R(250,140,34,22,"ic",2)+T(267,154,"LiPo")+
+      P("M106 80 H128 L140 68 H150")+P("M106 98 H134 L150 114 V128 H178","tr thin")+
+      P("M106 116 H124 L150 142 H162","tr thin")+P("M250 150 H226 L214 162 H194","tr thin");
+  },
+  pulse(){
+    return edge()+holes()+
+      R(36,56,110,40,"ic",3)+row(44,60,10,10,0,3.5)+row(44,92,10,10,0,3.5)+T(91,80,"NANO")+
+      R(180,36,100,52,"ic",4)+T(230,66,"OLED")+
+      R(214,122,30,30,"ic",3)+C(229,137,6,"ring")+T(229,166,"MAX30102")+
+      C(60,146,8,"ring")+C(92,146,8,"ring")+C(124,146,8,"ring")+
+      P("M146 66 H166 L176 56 H180")+P("M146 82 H168 L196 110 V122 H214")+
+      P("M60 138 V112 L68 104 H120","tr thin")+P("M124 138 V118 L138 104 H146","tr thin");
+  },
+  shield(){
+    let ports="";
+    [["A",40],["D",100],["S",184],["I²C",250]].forEach(([l,x],i)=>{
+      for(let k=0;k<3;k++)ports+=row(x,30+k*12,i===3?4:3,10,0,5);
+      ports+=T(x+10,82,l);
+    });
+    return edge()+holes()+ports+
+      R(116,100,92,48,"ic",3)+row(122,104,9,10,0,3.5)+row(122,144,9,10,0,3.5)+T(162,128,"PICO")+
+      P("M60 66 V90 L82 112 H116")+P("M120 66 V86 L134 100","tr thin")+
+      P("M204 66 V86 L190 100","tr thin")+P("M270 66 V90 L248 112 H208")+
+      P("M60 160 H260","tr thin");
+  }
+};
+
+PROJECTS.forEach(p=>{p.photos=[
+  {src:`media/${p.id}/1.jpg`,cap:"Photo 1"},
+  {src:`media/${p.id}/2.jpg`,cap:"Photo 2"}
+]});
+
+function photoSlots(p){
+  return `<div class="shots">${p.photos.map(ph=>`<button type="button" class="shot" data-src="${ph.src}" data-cap="${p.name} · ${ph.cap}">
+    <img src="${ph.src}" alt="${p.name}, ${ph.cap.toLowerCase()}" loading="lazy" onerror="this.parentNode.classList.add('missing')">
+    <span class="ph"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>${ph.src}</span></button>`).join("")}</div>`;
+}
+
+function lightbox(){
+  document.addEventListener("click",e=>{
+    const b=e.target.closest(".shot");if(!b||b.classList.contains("missing"))return;
+    const box=document.createElement("div");box.className="lightbox";box.setAttribute("role","dialog");box.setAttribute("aria-label","Photo");
+    box.innerHTML=`<div><img src="${b.dataset.src}" alt=""><p>${b.dataset.cap}</p></div>`;
+    const close=()=>{box.remove();removeEventListener("keydown",esc)};const esc=ev=>{if(ev.key==="Escape")close()};
+    box.addEventListener("click",close);addEventListener("keydown",esc);document.body.appendChild(box);
+  });
+}
+
+function drawBoard(id){
+  return `<svg class="board" viewBox="0 0 320 200" role="img" aria-label="${id} board drawing">${DRAW[id]()}</svg>`;
+}
+
+/* measure traces, add travelling pulses, redraw on hover */
+function wireBoard(host){
+  const svg=host.querySelector("svg.board"); if(!svg) return;
+  const trs=[...svg.querySelectorAll(".tr")];
+  trs.forEach(p=>{try{p.style.setProperty("--len",Math.ceil(p.getTotalLength())+1)}catch(e){}});
+  if(!RM){
+    trs.filter(p=>!p.classList.contains("thin")).slice(0,2).forEach((p,i)=>{
+      const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+      c.setAttribute("r","2.6");c.setAttribute("class","pulse");
+      c.innerHTML=`<animateMotion dur="${2.6+i*.9}s" begin="${i*.8}s" repeatCount="indefinite" path="${p.getAttribute("d")}"/>`;
+      svg.appendChild(c);
+    });
+    const card=host.closest("[data-board-card]")||host;
+    card.addEventListener("pointerenter",()=>{host.classList.add("redraw");host.getBoundingClientRect();requestAnimationFrame(()=>host.classList.remove("redraw"))});
+  }
+}
+
+/* ---------- page-wide effects ---------- */
+function init(){
+  const bar=document.querySelector(".progress"), nav=document.querySelector("nav.top");
+  let ticking=false;
+  const onScroll=()=>{ if(ticking) return; ticking=true; requestAnimationFrame(()=>{
+    const h=document.documentElement.scrollHeight-innerHeight;
+    if(bar) bar.style.setProperty("--p",h>0?scrollY/h:0);
+    if(nav) nav.classList.toggle("scrolled",scrollY>8);
+    document.dispatchEvent(new CustomEvent("tick"));
+    ticking=false;});
+  };
+  addEventListener("scroll",onScroll,{passive:true}); onScroll();
+
+  if("IntersectionObserver" in window && !RM){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{rootMargin:"0px 0px -8% 0px"});
+    document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+  } else document.querySelectorAll(".rv").forEach(el=>el.classList.add("in"));
+
+  document.querySelectorAll(".glow").forEach(el=>el.addEventListener("pointermove",e=>{
+    const r=el.getBoundingClientRect();
+    el.style.setProperty("--gx",(e.clientX-r.left)+"px");el.style.setProperty("--gy",(e.clientY-r.top)+"px");
+  }));
+
+  if(FINE && !RM){
+    document.querySelectorAll(".mag").forEach(el=>{
+      el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect();
+        el.style.setProperty("--mx",((e.clientX-r.left-r.width/2)*.22)+"px");
+        el.style.setProperty("--my",((e.clientY-r.top-r.height/2)*.3)+"px");});
+      el.addEventListener("pointerleave",()=>{el.style.setProperty("--mx","0px");el.style.setProperty("--my","0px")});
+    });
+    document.querySelectorAll("[data-tilt]").forEach(el=>{
+      el.addEventListener("pointermove",e=>{const r=el.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+        el.style.transform=`perspective(900px) rotateX(${(-y*7).toFixed(2)}deg) rotateY(${(x*9).toFixed(2)}deg) translateY(-4px)`;});
+      el.addEventListener("pointerleave",()=>{el.style.transform=""});
+    });
+  }
+
+  const copy=document.getElementById("copy"), addr=document.getElementById("addr");
+  if(copy&&addr) copy.addEventListener("click",()=>{
+    const done=()=>{copy.textContent="Copied";setTimeout(()=>copy.textContent="Copy email",1600)};
+    const sel=()=>{const r=document.createRange();r.selectNodeContents(addr);const s=getSelection();s.removeAllRanges();s.addRange(r)};
+    try{navigator.clipboard.writeText(addr.textContent.trim()).then(done,sel)}catch(e){sel()}
+  });
+}
+
+window.PCB={PROJECTS,drawBoard,wireBoard,photoSlots,lightbox,init,RM};
+})();
+
+
 const grid=document.getElementById("grid");
 PCB.PROJECTS.forEach((p,i)=>{
   grid.insertAdjacentHTML("beforeend",`<article class="pcard glow rv${i<2?" big":""}" id="${p.id}" data-tilt data-board-card style="--d:${(i%3)*.07}s">
     <div class="art">${p.tag?`<span class="tagline">${p.tag}</span>`:""}${PCB.drawBoard(p.id)}</div>
-    <div class="info"><h3>${p.name}</h3><p>${p.blurb}</p><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join("")}</div></div>
+    <div class="info"><h3>${p.name}</h3><p>${p.blurb}</p><div class="chips">${p.chips.map(c=>`<span>${c}</span>`).join("")}</div>${PCB.photoSlots(p)}</div>
   </article>`);
 });
 grid.querySelectorAll(".art").forEach(PCB.wireBoard);
+PCB.lightbox();
 PCB.init();
 </script>
 </body>
